@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+
 namespace Broiler.Dom;
 
 [Flags]
@@ -23,9 +26,7 @@ public sealed class DomTreeWalker
 {
     private readonly Func<DomNode, DomFilterResult>? _filter;
 
-    public DomTreeWalker(
-        DomNode root,
-        DomWhatToShow whatToShow = DomWhatToShow.All,
+    public DomTreeWalker(DomNode root, DomWhatToShow whatToShow = DomWhatToShow.All,
         Func<DomNode, DomFilterResult>? filter = null)
     {
         Root = root ?? throw new ArgumentNullException(nameof(root));
@@ -203,10 +204,7 @@ public sealed class DomNodeIterator : IDisposable
     private bool _disposed;
     private int _lastKnownIndex = -1;
 
-    public DomNodeIterator(
-        DomNode root,
-        DomWhatToShow whatToShow = DomWhatToShow.All,
-        Func<DomNode, DomFilterResult>? filter = null)
+    public DomNodeIterator(DomNode root, DomWhatToShow whatToShow = DomWhatToShow.All, Func<DomNode, DomFilterResult>? filter = null)
     {
         Root = root ?? throw new ArgumentNullException(nameof(root));
         WhatToShow = whatToShow;

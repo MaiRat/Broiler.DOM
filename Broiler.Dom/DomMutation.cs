@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Broiler.Dom;
 
 public enum DomMutationType

@@ -1,12 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Broiler.Dom;
 
 public sealed class DomDocument : DomNode
 {
-    private readonly Dictionary<string, HashSet<DomElement>> _elementsById =
-        new(StringComparer.Ordinal);
+    private readonly Dictionary<string, HashSet<DomElement>> _elementsById = new(StringComparer.Ordinal);
 
-    public DomDocument()
-        : base(DomNodeType.Document, null)
+    public DomDocument() : base(DomNodeType.Document, null)
     {
     }
 
@@ -16,14 +18,10 @@ public sealed class DomDocument : DomNode
 
     public DomDocumentType? DocumentType => ChildNodes.OfType<DomDocumentType>().FirstOrDefault();
 
-    public DomElement? Head => DocumentElement?
-        .ChildNodes
-        .OfType<DomElement>()
+    public DomElement? Head => DocumentElement?.ChildNodes.OfType<DomElement>()
         .FirstOrDefault(static element => string.Equals(element.LocalName, "head", StringComparison.OrdinalIgnoreCase));
 
-    public DomElement? Body => DocumentElement?
-        .ChildNodes
-        .OfType<DomElement>()
+    public DomElement? Body => DocumentElement?.ChildNodes.OfType<DomElement>()
         .FirstOrDefault(static element => string.Equals(element.LocalName, "body", StringComparison.OrdinalIgnoreCase));
 
     public ulong Version { get; private set; }
@@ -50,9 +48,7 @@ public sealed class DomDocument : DomNode
         if (!_elementsById.TryGetValue(id, out var candidates) || candidates.Count == 0)
             return null;
 
-        return Descendants()
-            .OfType<DomElement>()
-            .FirstOrDefault(candidates.Contains);
+        return Descendants().OfType<DomElement>().FirstOrDefault(candidates.Contains);
     }
 
     public IEnumerable<DomElement> GetElementsByTagName(string localName) =>

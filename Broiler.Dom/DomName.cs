@@ -1,3 +1,5 @@
+using System;
+
 namespace Broiler.Dom;
 
 public readonly record struct DomName

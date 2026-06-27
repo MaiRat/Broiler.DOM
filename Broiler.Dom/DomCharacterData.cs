@@ -1,14 +1,11 @@
+using System;
+
 namespace Broiler.Dom;
 
-public abstract class DomCharacterData : DomNode
+public abstract class DomCharacterData(DomNodeType nodeType, DomDocument ownerDocument, string data) : 
+    DomNode(nodeType, ownerDocument)
 {
-    private string _data;
-
-    protected DomCharacterData(DomNodeType nodeType, DomDocument ownerDocument, string data)
-        : base(nodeType, ownerDocument)
-    {
-        _data = data ?? throw new ArgumentNullException(nameof(data));
-    }
+    private string _data = data ?? throw new ArgumentNullException(nameof(data));
 
     public string Data
     {

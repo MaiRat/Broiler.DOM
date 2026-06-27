@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>Broiler.Dom</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>disable</ImplicitUsings> <!-- MaiRat: please leave disabled - so everyone can trace back used types (even with notepad) -->
     <Nullable>enable</Nullable>
     <Description>Dependency-free canonical DOM tree, mutation, attribute, and traversal kernel for Broiler.</Description>
   </PropertyGroup>

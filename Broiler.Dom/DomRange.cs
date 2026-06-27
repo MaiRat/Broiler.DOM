@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+
 namespace Broiler.Dom;
 
 public sealed class DomRange : IDisposable
@@ -140,12 +143,7 @@ public sealed class DomRange : IDisposable
         AdjustBoundary(ref _endContainer, ref _endOffset, parent, removed, index);
     }
 
-    private static void AdjustBoundary(
-        ref DomNode container,
-        ref int offset,
-        DomNode parent,
-        DomNode removed,
-        int index)
+    private static void AdjustBoundary(ref DomNode container, ref int offset, DomNode parent, DomNode removed, int index)
     {
         if (ReferenceEquals(container, removed) || container.IsDescendantOf(removed))
         {
