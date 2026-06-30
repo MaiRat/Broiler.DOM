@@ -323,6 +323,31 @@ public sealed class DomKernelTests
         Assert.True(range.Collapsed);
     }
 
+    [Fact]
+    public void Descendants_Survives_Child_Mutation_Mid_Enumeration()
+    {
+        // Descendants() is enumerated lazily; consumers (querySelectorAll,
+        // getElementsByTagName, tree walkers) hold the enumerator open while the
+        // tree mutates. Iterating the live child list then threw "Collection was
+        // modified" and aborted the walk, crashing whole WPT shards (issue #1143).
+        var document = CreateHtmlDocument(out var body);
+        var section = document.CreateElement("section");
+        body.AppendChild(section);
+        for (var i = 0; i < 3; i++)
+            section.AppendChild(document.CreateElement("span"));
+
+        // Append a new child to the same level being walked, mid-enumeration.
+        var visited = 0;
+        foreach (var node in body.Descendants())
+        {
+            visited++;
+            if (node is DomElement { LocalName: "section" })
+                section.AppendChild(document.CreateElement("span"));
+        }
+
+        Assert.True(visited >= 4);
+    }
+
     private static DomDocument CreateHtmlDocument(out DomElement body)
     {
         var document = new DomDocument();

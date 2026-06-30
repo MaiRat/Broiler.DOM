@@ -187,7 +187,13 @@ public abstract class DomNode
 
     public IEnumerable<DomNode> Descendants()
     {
-        foreach (var child in _children)
+        // Snapshot each level: Descendants() is enumerated lazily by long-lived
+        // consumers (querySelectorAll, getElementsByTagName, tree walkers) while
+        // script — or anchor/style reflection on the bridge — mutates _children
+        // between MoveNext calls. Iterating the live list then throws "Collection
+        // was modified" and aborts the walk (WPT issue #1143). Snapshotting is the
+        // same defensive idiom the bridge uses for its Children walks.
+        foreach (var child in _children.ToArray())
         {
             yield return child;
             foreach (var descendant in child.Descendants())
